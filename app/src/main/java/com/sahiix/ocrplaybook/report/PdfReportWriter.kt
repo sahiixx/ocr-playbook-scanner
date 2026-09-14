@@ -29,7 +29,7 @@ class PdfReportWriter @Inject constructor(
             val pageH = 842
             val margin = 48f
             var pageNum = 1
-            var page = doc.startPage(PdfDocument.PageInfo.Builder(pageW, pageH, pageNum).build())
+            var page = doc.startPage(PdfDocument.PageInfo.Builder(pageW, pageH, pageNum).create())
             var canvas = page.canvas
             var y = margin
 
@@ -43,7 +43,7 @@ class PdfReportWriter @Inject constructor(
                 canvas.drawText("— $pageNum —", pageW / 2f - 12, pageH - 24f, footPaint)
                 doc.finishPage(page)
                 pageNum++
-                page = doc.startPage(PdfDocument.PageInfo.Builder(pageW, pageH, pageNum).build())
+                page = doc.startPage(PdfDocument.PageInfo.Builder(pageW, pageH, pageNum).create())
                 canvas = page.canvas
                 y = margin
             }

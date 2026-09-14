@@ -112,7 +112,7 @@ object PlaybookBuilder {
             if (lowConfidence.isNotEmpty()) {
                 appendLine()
                 appendLine("## Needs review (low confidence)")
-                lowConfidence.forEach { appendLine("- _$it\_") }
+                lowConfidence.forEach { appendLine("- _${it}_") }
             }
             appendLine()
             appendLine("## Full transcript")

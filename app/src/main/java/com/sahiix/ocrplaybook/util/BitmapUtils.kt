@@ -67,7 +67,9 @@ class BitmapUtils @Inject constructor(
 
     fun isLowMemory(): Boolean {
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        return am.isLowRamDevice || am.lowMemory
+        val mi = ActivityManager.MemoryInfo()
+        am.getMemoryInfo(mi)
+        return am.isLowRamDevice || mi.lowMemory
     }
 
     fun suggestedMaxEdge(): Int {
