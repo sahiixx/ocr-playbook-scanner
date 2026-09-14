@@ -23,7 +23,7 @@ irrelevant. Also slightly faster to process.
 
 ## 3. Bitmap recycling discipline
 
-- `MlKitOcrEngine.recognizeBitmap` downscales the input, recognizes the
+- `MlKitOcrEngine.recognize` downscales the input, recognizes the
   copy, then **recycles the copy** in a `finally`.
 - `ScanRepository.scanUri` decodes → scans → recycles the source.
 - `RealtimeOcrAnalyzer` releases the `ImageProxy` immediately after copying
@@ -63,3 +63,16 @@ adb shell dumpsys meminfo com.sahiix.ocrplaybook | grep -A5 TOTAL
 # Any OOM would come back as:
 adb logcat -d | grep -i "OutOfMemory\|lowmemorykiller"
 ```
+
+## 8. Pluggable OCR engines
+
+- Recognition goes through an `OcrEngine` interface; the default ML Kit
+  engine ships a bundled model (no data files on disk), while the optional
+  Tesseract engine (tess-two) loads native libraries plus an `eng.traineddata`
+  file into the process — weigh per low-RAM device.
+- tess-two allocates image buffers on the **native** heap (outside the
+  JVM/GC): the wrapper's `clear()` after each recognition is what frees a
+  frame's pixels, whereas the ML Kit path recycles Kotlin bitmaps explicitly.
+- `TesseractLocalEngine` serializes all native calls on an internal lock and
+  runs on `Dispatchers.Default`; `eng.traineddata` lives on disk under
+  `<filesDir>/tessdata/` so it never counts against Java heap.

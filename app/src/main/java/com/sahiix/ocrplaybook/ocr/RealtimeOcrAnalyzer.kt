@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
  * - ImageProxy is ALWAYS closed, even on failure (else CameraX stalls).
  */
 class RealtimeOcrAnalyzer(
-    private val engine: MlKitOcrEngine,
+    private val engine: OcrEngine,
     private val bitmapUtils: BitmapUtils,
     private val throttleMs: Long = REALTIME_THROTTLE_MS
 ) : ImageAnalysis.Analyzer {
@@ -56,7 +56,7 @@ class RealtimeOcrAnalyzer(
                 try {
                     val small = bitmapUtils.scaleForRealtime(bmp, REALTIME_TARGET_WIDTH)
                     try {
-                        _latest.value = engine.recognizeBitmap(small, rotation)
+                        _latest.value = engine.recognize(small, rotation)
                     } finally {
                         if (small !== bmp && !small.isRecycled) small.recycle()
                     }

@@ -56,6 +56,23 @@ gradle :app:assembleDebug          # APK
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
+### Optional: switch OCR engine to Tesseract
+
+The default build uses ML Kit (bundled model — zero setup). To try the
+true-local Tesseract engine instead:
+
+1. Download `eng.traineddata` ("tessdata_fast") from the tesseract-ocr/tessdata
+   repository.
+2. Either bundle it at `app/src/main/assets/tessdata/eng.traineddata`
+   (auto-copied to app storage on first use), or push it on-device into
+   `<filesDir>/tessdata/`.
+3. Flip the engine in `ocr/OcrEngineProvider.kt`: change the provider
+   parameter from `engine: MlKitOcrEngine` to `engine: TesseractLocalEngine`.
+4. Rebuild (`gradle :app:assembleDebug`); scans now record `tesseract-local`.
+
+The traineddata binary is not part of this repo — bundle it only if you
+intend to pin it into every APK.
+
 ## 4. Release build (signed, for sharing / Play)
 
 ```bash

@@ -15,20 +15,22 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * On-device OCR engine (ML Kit Text Recognition v2, Latin).
- * 100% offline — no key, no network, no billing.
+ * On-device OCR engine (ML Kit Text Recognition v2, Latin) — the app's
+ * default OcrEngine. 100% offline — no key, no network, no billing.
  * Heavy work stays on Dispatchers.Default; callers are free to call from Main.
  */
 @Singleton
 class MlKitOcrEngine @Inject constructor(
     @ApplicationContext private val context: Context,
     private val bitmapUtils: BitmapUtils
-) {
+) : OcrEngine {
+    override val name: String = "mlkit-on-device"
+
     private val recognizer by lazy {
         TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     }
 
-    suspend fun recognizeBitmap(src: Bitmap, rotationDegrees: Int = 0): OcrResult =
+    override suspend fun recognize(src: Bitmap, rotationDegrees: Int = 0): OcrResult =
         withContext(Dispatchers.Default) {
             // Downscale copy; original bitmap untouched. Recycle the copy after.
             val scaled = bitmapUtils.scaleForRealtime(src, bitmapUtils.suggestedMaxEdge())
@@ -60,7 +62,7 @@ class MlKitOcrEngine @Inject constructor(
         val bmp = bitmapUtils.decodeSampled(uri, bitmapUtils.suggestedMaxEdge())
             ?: return@withContext OcrResult("", emptyList())
         try {
-            recognizeBitmap(bmp)
+            recognize(bmp)
         } finally {
             if (!bmp.isRecycled) bmp.recycle()
         }
@@ -70,11 +72,11 @@ class MlKitOcrEngine @Inject constructor(
         val bmp = bitmapUtils.decodeSampled(path, bitmapUtils.suggestedMaxEdge())
             ?: return@withContext OcrResult("", emptyList())
         try {
-            recognizeBitmap(bmp)
+            recognize(bmp)
         } finally {
             if (!bmp.isRecycled) bmp.recycle()
         }
     }
 
-    fun close() { try { recognizer.close() } catch (_: Exception) { } }
+    override fun close() { try { recognizer.close() } catch (_: Exception) { } }
 }

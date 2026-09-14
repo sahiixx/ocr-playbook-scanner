@@ -84,6 +84,11 @@ dependencies {
     // implementation("com.google.mlkit:text-recognition-japanese:16.0.1")
     // implementation("com.google.mlkit:text-recognition-korean:16.0.1")
 
+    // ---- Tesseract (optional local OCR engine) ----
+    // True local open-source OCR via tess-two (JNI Tesseract 3.05 +
+    // Leptonica). Requires eng.traineddata — see TesseractLocalEngine.
+    implementation("com.rmtheis:tess-two:9.1.0")
+
     // ---- Image loading (memory-efficient) ----
     implementation("io.coil-kt:coil-compose:2.6.0")
 

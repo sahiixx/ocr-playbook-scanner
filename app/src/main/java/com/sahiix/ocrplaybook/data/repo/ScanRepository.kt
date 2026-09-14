@@ -6,7 +6,7 @@ import android.net.Uri
 import com.sahiix.ocrplaybook.data.db.OcrBlockEntity
 import com.sahiix.ocrplaybook.data.db.ScanDao
 import com.sahiix.ocrplaybook.data.db.ScanEntity
-import com.sahiix.ocrplaybook.ocr.MlKitOcrEngine
+import com.sahiix.ocrplaybook.ocr.OcrEngine
 import com.sahiix.ocrplaybook.ocr.OcrResult
 import com.sahiix.ocrplaybook.util.BitmapUtils
 import com.sahiix.ocrplaybook.util.Constants.IMAGES_DIR
@@ -29,7 +29,7 @@ import javax.inject.Singleton
 class ScanRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dao: ScanDao,
-    private val engine: MlKitOcrEngine,
+    private val engine: OcrEngine,
     private val bitmapUtils: BitmapUtils
 ) {
     fun observeAll(): Flow<List<ScanEntity>> = dao.observeAll()
@@ -57,7 +57,7 @@ class ScanRepository @Inject constructor(
 
     /** OCR an in-memory bitmap (camera capture), persist, return id. */
     suspend fun scanBitmap(src: Bitmap): Pair<Long, OcrResult> = withContext(Dispatchers.IO) {
-        val result = engine.recognizeBitmap(src)
+        val result = engine.recognize(src)
         val savedPath = persistBitmap(src)
         val title = result.fullText.lineSequence()
             .map { it.trim() }.firstOrNull { it.isNotEmpty() }

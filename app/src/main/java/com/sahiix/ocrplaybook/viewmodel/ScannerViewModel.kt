@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sahiix.ocrplaybook.data.repo.ScanRepository
-import com.sahiix.ocrplaybook.ocr.MlKitOcrEngine
+import com.sahiix.ocrplaybook.ocr.OcrEngine
 import com.sahiix.ocrplaybook.ocr.OcrResult
 import com.sahiix.ocrplaybook.ocr.RealtimeOcrAnalyzer
 import com.sahiix.ocrplaybook.util.BitmapUtils
@@ -26,7 +26,7 @@ sealed interface ScanUiState {
 @HiltViewModel
 class ScannerViewModel @Inject constructor(
     private val repository: ScanRepository,
-    val engine: MlKitOcrEngine,
+    val engine: OcrEngine,
     val bitmapUtils: BitmapUtils
 ) : ViewModel() {
     private val _state = MutableStateFlow<ScanUiState>(ScanUiState.Idle)
