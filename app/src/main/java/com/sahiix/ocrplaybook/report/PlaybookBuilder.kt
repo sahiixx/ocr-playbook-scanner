@@ -28,7 +28,7 @@ object PlaybookBuilder {
     private val EMAIL = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
     private val PHONE = Regex("(?:\\+?\\d[\\d\\s().-]{6,}\\d)")
     private val DATE = Regex(
-        "(?i)\\b(\\d{1,2}[/-.]\\d{1,2}[/-.]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})\\b"
+        "(?i)\\b(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})\\b"
     )
     private val MONTH_DATE = Regex(
         "(?i)\\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\\s+\\d{1,2}(?:st|nd|rd|th)?(?:,?\\s+\\d{4})?\\b"
