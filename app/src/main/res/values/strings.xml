@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">OCR Playbook Scanner</string>
+    <string name="tagline">Scan anything. Get a playbook.</string>
+    <string name="action_scan">Scan</string>
+    <string name="action_gallery">Gallery</string>
+    <string name="action_history">History</string>
+    <string name="action_report">Report</string>
+    <string name="action_settings">Settings</string>
+    <string name="cd_camera_preview">Camera preview</string>
+    <string name="cd_scanned_image">Scanned image</string>
+</resources>

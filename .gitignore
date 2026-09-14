@@ -1,0 +1,27 @@
+# Gradle / Android
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+*.hprof
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Room exported schemas ARE worth committing (schema version control):
+/app/schemas/
+!/app/schemas/**/*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Signing — NEVER commit keystores or passwords
+*.jks
+*.keystore
+keystore.properties
